@@ -24,10 +24,12 @@ func _ready() -> void:
 
 func init_arr() -> void:
 	arr.edge = [1, 2, 3, 4, 5, 6]
+	arr.direction = ["up", "right", "down", "left"]
 	arr.orientation = ["above", "right", "below", "left"]
 	arr.windrose = ["N", "E", "S", "W"]
 	arr.sector = [0, 1, 2, 3, 4]
 	arr.type = ["corner", "edge", "center"]
+	arr.sequence = ["first", "second", "third", "fourth"]
 
 
 func init_num() -> void:
@@ -54,6 +56,44 @@ func init_quality() -> void:
 	dict.number.quality[4] = "gold"
 	dict.number.quality[5] = "gold"
 	dict.number.quality[6] = "platinum"
+	
+	dict.alignment = {}
+	dict.alignment.horizontal = ["up", "down"]
+	dict.alignment.vertical = ["left", "right"]
+	dict.alignment.up = "horizontal"
+	dict.alignment.down = "horizontal"
+	dict.alignment.left = "vertical"
+	dict.alignment.right = "vertical"
+	
+	dict.synonym = {}
+	dict.synonym["N"] = "up"
+	dict.synonym["NE"] = "up right"
+	dict.synonym["E"] = "right"
+	dict.synonym["SE"] = "down right"
+	dict.synonym["S"] = "down"
+	dict.synonym["SW"] = "down left"
+	dict.synonym["W"] = "left"
+	dict.synonym["NW"] = "up left"
+	dict.synonym["up"] = "N"
+	dict.synonym["right"] = "E"
+	dict.synonym["down"] = "S"
+	dict.synonym["left"] = "W"
+	dict.synonym[""] = ""
+	
+	dict.sequence = {}
+	dict.sequence.map = {}
+	dict.sequence.map["first"] = {}
+	dict.sequence.map["first"]["x"] = "left"
+	dict.sequence.map["first"]["y"] = "up"
+	dict.sequence.map["second"] = {}
+	dict.sequence.map["second"]["x"] = "right"
+	dict.sequence.map["second"]["y"] = "up"
+	dict.sequence.map["third"] = {}
+	dict.sequence.map["third"]["x"] = "left"
+	dict.sequence.map["third"]["y"] = "down"
+	dict.sequence.map["fourth"] = {}
+	dict.sequence.map["fourth"]["x"] = "right"
+	dict.sequence.map["fourth"]["y"] = "down"
 
 
 func init_neighbor() -> void:
@@ -165,6 +205,9 @@ func init_vec():
 	vec.size.quadrant = Vector2(vec.size.sixteen * 2)#Vector2(96, 96)
 	vec.size.plate = Vector2(vec.size.sixteen * 6)
 	vec.size.facet = Vector2(vec.size.sixteen * 2)
+	vec.size.emblem = Vector2(vec.size.sixteen * 2)
+	vec.size.banner = Vector2(vec.size.emblem * 2)
+	vec.size.tactic = Vector2(vec.size.banner * 2)
 	
 	init_window_size()
 

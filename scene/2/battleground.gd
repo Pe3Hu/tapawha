@@ -15,6 +15,10 @@ var selection = {}
 func set_attributes(input_: Dictionary) -> void:
 	space = input_.space
 	
+	init_basic_setting()
+
+
+func init_basic_setting() -> void:
 	init_quadrants()
 	current.layer = null
 	#change_current_layer(0)
@@ -197,3 +201,10 @@ func prepare_selection() -> void:
 			selection.append(quadrant)
 			quadrant.paint("blue")
 			options.erase(quadrant)
+
+
+func order_disembark(order_: MarginContainer) -> void:
+	order_.battleground = self
+	
+	var quadrant = quadrants.get_child(9)
+	order_.tactic.disembark_on_quadrant(quadrant)

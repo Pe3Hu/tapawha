@@ -63,7 +63,7 @@ func update_result() -> void:
 			result = dice.get_current_facet_value()
 	
 	data.value = result
-	print(data)
+	#print(data)
 	#knight.results.append(data)
 	#knight.check_results()
 

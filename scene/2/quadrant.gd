@@ -3,6 +3,7 @@ extends MarginContainer
 
 #region vars
 @onready var icon = $Icon
+@onready var index = $Index
 @onready var bg = $BG
 
 var planet = null
@@ -29,6 +30,13 @@ func set_attributes(input_: Dictionary) -> void:
 
 func init_basic_setting() -> void:
 	custom_minimum_size = Global.vec.size.quadrant
+	
+	var input = {}
+	input.type = "number"
+	input.subtype = grid.y * Global.num.quadrant.col + grid.x
+	index.set_attributes(input)
+	index.custom_minimum_size = Vector2(Global.vec.size.sixteen)
+	
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color.SLATE_GRAY
 	bg.set("theme_override_styles/panel", style)
