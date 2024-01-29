@@ -1,0 +1,79 @@
+[
+ {
+  "title": "conjugation",
+  "input count": "any",
+  "output count": "none",
+  "input value": "unique",
+  "output value": "avg"
+ },
+ {
+  "title": "evolution",
+  "input count": "any",
+  "output count": "none",
+  "input value": "unique",
+  "output value": "max"
+ },
+ {
+  "title": "degradation",
+  "input count": "any",
+  "output count": "none",
+  "input value": "unique",
+  "output value": "min"
+ },
+ {
+  "title": "ascension",
+  "input count": 1,
+  "output count": "none",
+  "input value": "not 6",
+  "output value": "equal 6"
+ },
+ {
+  "title": "downfall",
+  "input count": 1,
+  "output count": "none",
+  "input value": "not 1",
+  "output value": "equal 1"
+ },
+ {
+  "title": "fragmentation",
+  "input count": 1,
+  "output count": "to value",
+  "input value": "not 1",
+  "output value": "equal 1"
+ },
+ {
+  "title": "amalgamation",
+  "input count": 2,
+  "output count": "to single",
+  "input value": "less 4",
+  "output value": "sum"
+ },
+ {
+  "title": "advancement",
+  "input count": 1,
+  "output count": "none",
+  "input value": "not 6",
+  "output value": "plus 1"
+ },
+ {
+  "title": "regression",
+  "input count": 1,
+  "output count": "none",
+  "input value": "not 1",
+  "output value": "minus 1"
+ },
+ {
+  "title": "reflection",
+  "input count": 1,
+  "output count": "none",
+  "input value": "any",
+  "output value": "mirror"
+ },
+ {
+  "title": "reincarnation",
+  "input count": "any",
+  "output count": "none",
+  "input value": "any",
+  "output value": "reroll"
+ }
+]

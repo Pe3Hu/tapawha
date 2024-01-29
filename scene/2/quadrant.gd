@@ -13,7 +13,7 @@ var type = null
 var subtype = null
 var windroses = {}
 var neighbors = {}
-var free = true
+var knights = []
 #endregion
 
 

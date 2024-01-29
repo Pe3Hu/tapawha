@@ -30,6 +30,8 @@ func init_arr() -> void:
 	arr.sector = [0, 1, 2, 3, 4]
 	arr.type = ["corner", "edge", "center"]
 	arr.sequence = ["first", "second", "third", "fourth"]
+	arr.put = ["input", "output"]
+	arr.comparison = ["less", "more"]
 
 
 func init_num() -> void:
@@ -39,12 +41,18 @@ func init_num() -> void:
 	num.quadrant.n = 3
 	num.quadrant.col = num.quadrant.n * 2 + 1
 	num.quadrant.row = num.quadrant.col
+	
+	num.thickness = {}
+	num.thickness.min = 1
+	num.thickness.max = 6
 
 
 func init_dict() -> void:
 	init_neighbor()
 	init_quality()
 	init_windrose()
+	init_interaction()
+	init_enchantment()
 
 
 func init_quality() -> void:
@@ -164,21 +172,62 @@ func init_windrose() -> void:
 			dict.windrose[windrose] = direction
 
 
-func init_blank() -> void:
-	dict.blank = {}
-	dict.blank.title = {}
+func init_interaction() -> void:
+	dict.interaction = {}
+	dict.interaction.title = {}
 	
-	var path = "res://asset/json/poupou_blank.json"
+	var path = "res://asset/json/tapawha_interaction.json"
 	var array = load_data(path)
+	var exceptions = ["title"]
 	
-	for blank in array:
+	for interaction in array:
 		var data = {}
 		
-		for key in blank:
-			if key != "title":
-				data[key] = blank[key]
+		for put in arr.put:
+			data[put] = {}
 		
-		dict.blank.title[blank.title] = data
+		for key in interaction:
+			if !exceptions.has(key):
+				var words = key.split(" ")
+				data[words[0]][words[1]] = interaction[key]
+		
+		dict.interaction.title[interaction.title] = data
+
+
+func init_enchantment() -> void:
+	dict.enchantment = {}
+	dict.enchantment.index = {}
+	dict.enchantment.role = {}
+	
+	var path = "res://asset/json/tapawha_enchantment.json"
+	var array = load_data(path)
+	var exceptions = ["index"]
+	
+	for enchantment in array:
+		var data = {}
+		data.condition = {}
+		data.modifier = {}
+		enchantment.index = int(enchantment.index)
+		enchantment.rank = int(enchantment.rank)
+		
+		for key in enchantment:
+			if !exceptions.has(key):
+				var words = key.split(" ")
+				
+				if words.size() == 2:
+					data[words[0]][words[1]] = enchantment[key]
+				else:
+					data[key] = enchantment[key]
+		
+		dict.enchantment.index[enchantment.index] = data
+		
+		if !dict.enchantment.role.has(data.role):
+			dict.enchantment.role[data.role] = {}
+			
+		if !dict.enchantment.role[data.role].has(data.rank):
+			dict.enchantment.role[data.role][data.rank] = []
+		
+		dict.enchantment.role[data.role][data.rank].append(enchantment.index)
 
 
 func init_node() -> void:
@@ -186,15 +235,22 @@ func init_node() -> void:
 
 
 func init_scene() -> void:
+	scene.icon = load("res://scene/0/icon.tscn")
+	
 	scene.order = load("res://scene/1/order.tscn")
 	scene.knight = load("res://scene/1/knight.tscn")
 	
 	scene.battleground = load("res://scene/2/battleground.tscn")
 	scene.quadrant = load("res://scene/2/quadrant.tscn")
 	
-	scene.dice = load("res://scene/3/dice.tscn")
-	scene.facet = load("res://scene/3/facet.tscn")
 	scene.plate = load("res://scene/3/plate.tscn")
+	scene.gem = load("res://scene/3/gem.tscn")
+	scene.enchantment = load("res://scene/3/enchantment.tscn")
+	scene.socket = load("res://scene/3/socket.tscn")
+	
+	
+	scene.dice = load("res://scene/4/dice.tscn")
+	scene.facet = load("res://scene/4/facet.tscn")
 
 
 func init_vec():
@@ -203,11 +259,13 @@ func init_vec():
 	vec.size.sixteen = Vector2(16, 16)
 	
 	vec.size.quadrant = Vector2(vec.size.sixteen * 2)#Vector2(96, 96)
-	vec.size.plate = Vector2(vec.size.sixteen * 6)
+	vec.size.socket = Vector2(vec.size.sixteen * 3)
+	vec.size.plate = Vector2(vec.size.socket * 1.5)
 	vec.size.facet = Vector2(vec.size.sixteen * 2)
 	vec.size.emblem = Vector2(vec.size.sixteen * 2)
 	vec.size.banner = Vector2(vec.size.emblem * 2)
 	vec.size.tactic = Vector2(vec.size.banner * 2)
+	vec.size.gem = Vector2(vec.size.sixteen * 1.5) +  Vector2(vec.size.sixteen.x * 1.5, 0)
 	
 	init_window_size()
 
@@ -226,10 +284,20 @@ func init_color():
 	color.defender.active = Color.from_hsv(120 / h, 0.6, 0.7)
 	
 	color.quality = {}
-	color.quality.bronze = Color.from_hsv(210 / h, 0.95, 0.95)
-	color.quality.silver = Color.from_hsv(158 / h, 0.98, 0.9)
-	color.quality.gold = Color.from_hsv(275 / h, 0.6, 1.0)
-	color.quality.platinum = Color.from_hsv(37 / h, 0.9, 1.0)
+	#color.quality.bronze = Color.from_hsv(210 / h, 0.95, 0.95)
+	#color.quality.silver = Color.from_hsv(158 / h, 0.98, 0.9)
+	#color.quality.gold = Color.from_hsv(275 / h, 0.6, 1.0)
+	#color.quality.platinum = Color.from_hsv(37 / h, 0.9, 1.0)
+	color.quality.bronze = Color.from_hsv(23 / h, 0.6, 0.6)
+	color.quality.silver = Color.from_hsv(0 / h, 0.0, 0.6)
+	color.quality.gold = Color.from_hsv(55 / h, 0.9, 0.9)
+	color.quality.platinum = Color.from_hsv(160 / h, 0.9, 0.9)
+	
+	color.element = {}
+	color.element.aqua = Color.from_hsv(210 / h, 0.95, 0.95)
+	color.element.wind = Color.from_hsv(270 / h, 0.95, 0.95)
+	color.element.fire = Color.from_hsv(0 / h, 0.95, 0.95)
+	color.element.earth = Color.from_hsv(120 / h, 0.95, 0.95)
 
 
 func save(path_: String, data_: String):

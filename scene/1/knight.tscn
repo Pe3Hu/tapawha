@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://b6xt38h3tpi5k"]
+[gd_scene load_steps=6 format=3 uid="uid://b6xt38h3tpi5k"]
 
 [ext_resource type="Script" path="res://scene/1/knight.gd" id="1_enf13"]
 [ext_resource type="PackedScene" uid="uid://di2ttl63u73q1" path="res://scene/3/armor.tscn" id="2_5knlw"]
-[ext_resource type="PackedScene" uid="uid://dxmnh0dul7103" path="res://scene/3/pool.tscn" id="3_b65e0"]
+[ext_resource type="PackedScene" uid="uid://di0f7kus5r0rp" path="res://scene/3/veil.tscn" id="2_rimdj"]
+[ext_resource type="PackedScene" uid="uid://dxmnh0dul7103" path="res://scene/4/pool.tscn" id="3_b65e0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -28,13 +29,20 @@ visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Veil" parent="HBox" instance=ExtResource("2_rimdj")]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Armor" parent="VBox" instance=ExtResource("2_5knlw")]
+[node name="Armor" parent="HBox/VBox" instance=ExtResource("2_5knlw")]
 layout_mode = 2
 
-[node name="Pool" parent="VBox" instance=ExtResource("3_b65e0")]
+[node name="Pool" parent="HBox/VBox" instance=ExtResource("3_b65e0")]
 layout_mode = 2

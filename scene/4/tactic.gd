@@ -45,7 +45,6 @@ func init_indexs() -> void:
 	
 	for sequence in Global.arr.sequence:
 		var knight = order.sequences.get(sequence)
-		var icon = get(sequence)
 		knight.index = get(sequence)
 		input.subtype = Global.arr.sequence.find(sequence)
 		knight.index.set_attributes(input)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dxmnh0dul7103"]
 
-[ext_resource type="Script" path="res://scene/3/pool.gd" id="1_icdm5"]
+[ext_resource type="Script" path="res://scene/4/pool.gd" id="1_icdm5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 

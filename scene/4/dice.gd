@@ -105,9 +105,9 @@ func decelerate_spin() -> void:
 
 func _on_timer_timeout():
 	if pace >= 0.5:
-		var time = 1.0 / pace
+		var _time = 1.0 / pace
 		tween = create_tween()
-		tween.tween_property(facets, "position", Vector2(0, 0), time).from(anchor)
+		tween.tween_property(facets, "position", Vector2(0, 0), _time).from(anchor)
 		tween.tween_callback(pop_up)
 		decelerate_spin()
 	else:

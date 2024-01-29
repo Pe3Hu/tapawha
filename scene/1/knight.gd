@@ -2,8 +2,9 @@ extends MarginContainer
 
 
 #region vars
-@onready var armor = $VBox/Armor
-@onready var pool = $VBox/Pool
+@onready var veil = $HBox/Veil
+@onready var armor = $HBox/VBox/Armor
+@onready var pool = $HBox/VBox/Pool
 
 var order = null
 var sequence = null
@@ -25,6 +26,7 @@ func init_basic_setting() -> void:
 	var input = {}
 	input.knight = self
 	armor.set_attributes(input)
+	veil.set_attributes(input)
 	pool.set_attributes(input)
 	
 	for _i in 3:
@@ -34,7 +36,11 @@ func init_basic_setting() -> void:
 
 
 func set_quadrant(quadrant_: MarginContainer) -> void:
+	if quadrant != null:
+		quadrant.knights.erase(self)
+	
 	quadrant = quadrant_
 	index.set_number(quadrant.index.get_number())
+	quadrant.knights.append(self)
 #endregion
 

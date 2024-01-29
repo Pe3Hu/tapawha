@@ -3,6 +3,7 @@ extends MarginContainer
 
 #region vars
 @onready var bg = $BG
+@onready var str = $Str
 @onready var number = $Number
 @onready var textureRect = $TextureRect
 
@@ -21,11 +22,11 @@ func set_attributes(input_: Dictionary) -> void:
 
 func init_basic_setting() -> void:
 	custom_minimum_size = Vector2(Global.vec.size.sixteen)
-	var exceptions = ["number"]
+	var exceptions = ["number", "string"]
 	
 	if !exceptions.has(type):
 		#custom_minimum_size = Vector2(Global.vec.size[type])
-		set_image()
+		update_image()
 	
 	match type:
 		"number":
@@ -33,12 +34,25 @@ func init_basic_setting() -> void:
 			number.visible = true
 			set_number(subtype)
 			custom_minimum_size = Vector2(Global.vec.size.number)
+		"string":
+			textureRect.visible = false
+			str.visible = true
+			str.text = subtype
+			custom_minimum_size = Vector2(Global.vec.size.number)
 
 
-func set_image() -> void:
+func update_image() -> void:
+	if !textureRect.visible:
+		number.visible = false
+		textureRect.visible = true
+	
 	var path = "res://asset/png/"
 	path += type + "/" + str(subtype) + ".png"
 	textureRect.texture = load(path)
+	
+	#var style = StyleBoxFlat.new()
+	#style.bg_color = Color.SLATE_GRAY
+	#bg.set("theme_override_styles/panel", style)
 #endregion
 
 

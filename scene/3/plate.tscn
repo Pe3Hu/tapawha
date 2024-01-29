@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://br6odj2kxfseh"]
+[gd_scene load_steps=5 format=3 uid="uid://br6odj2kxfseh"]
 
 [ext_resource type="Script" path="res://scene/3/plate.gd" id="1_h8n2s"]
-[ext_resource type="PackedScene" path="res://scene/0/icon.tscn" id="2_b80sv"]
+[ext_resource type="PackedScene" uid="uid://bx4x4jrmais5j" path="res://scene/3/socket.tscn" id="2_a7u12"]
+[ext_resource type="PackedScene" uid="uid://b1jbnmq0el07g" path="res://scene/0/icon.tscn" id="2_b80sv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -27,41 +28,11 @@ visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 
+[node name="Socket" parent="." instance=ExtResource("2_a7u12")]
+layout_mode = 2
+
 [node name="Quality" parent="." instance=ExtResource("2_b80sv")]
 layout_mode = 2
 
-[node name="Wound" parent="." instance=ExtResource("2_b80sv")]
-visible = false
+[node name="Thickness" parent="." instance=ExtResource("2_b80sv")]
 layout_mode = 2
-
-[node name="First" parent="." instance=ExtResource("2_b80sv")]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-
-[node name="Second" parent="." instance=ExtResource("2_b80sv")]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-
-[node name="Left" parent="." instance=ExtResource("2_b80sv")]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Right" parent="." instance=ExtResource("2_b80sv")]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="Above" parent="." instance=ExtResource("2_b80sv")]
-visible = false
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="Below" parent="." instance=ExtResource("2_b80sv")]
-visible = false
-layout_mode = 2
-size_flags_vertical = 8
