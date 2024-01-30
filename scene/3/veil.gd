@@ -40,19 +40,20 @@ func roll_offense_enchantments() -> void:
 	var cols = [0, gems.columns - 1]
 	var n = gems.get_child_count() / gems.columns
 	
-	for col in cols:
+	for _i in cols.size():
+		var col = cols[_i]
 		var rank = Global.num.thickness.max
 		var input = {}
 		input.veil = self
 		input.gems = []
 		
-		for _i in n:
-			var index = _i * gems.columns + col
+		for _j in n:
+			var index = _j * gems.columns + col
 			var gem = gems.get_child(index)
 			rank = min(rank, gem.limit.get_number())
 			input.gems.append(gem)
 		
-		var options = Global.dict.enchantment.role.offense[rank]
+		var options = Global.dict.enchantment.origin[knight.origin][_i + 1]
 		input.index = options.pick_random()
 		
 		var enchantment = Global.scene.enchantment.instantiate()

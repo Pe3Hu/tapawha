@@ -3,15 +3,17 @@ extends MarginContainer
 
 #region vars
 @onready var sockets = $HBox/Sockets
-@onready var count = $HBox/Modifiers/Count
-@onready var value = $HBox/Modifiers/Value
+@onready var duplication = $HBox/Modifiers/Duplication
+@onready var advancement = $HBox/Modifiers/Advancement
 @onready var charge = $HBox/Charge
 @onready var interaction = $HBox/Interaction
 
 var veil = null
+var pool = null
 var index = null
 var gems = null
 var description = null
+var kits = []
 #endregion
 
 
@@ -25,6 +27,7 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func init_basic_setting() -> void:
+	pool = veil.knight.pool
 	#custom_minimum_size = Global.vec.size.plate
 	description = Global.dict.enchantment.index[index]
 	
@@ -39,21 +42,25 @@ func init_icons() -> void:
 	var input = {}
 	input.type = "number"
 	input.subtype = 0
-	var keys = ["count", "value", "charge"]
+	var keys = ["duplication", "advancement", "charge"]
 	
 	for key in keys:
 		var icon = get(key)
 		icon.set_attributes(input)
-		#icon.custom_minimum_size = Global.vec.size.socket / 4.0
+		icon.custom_minimum_size = Global.vec.size.socket / 2.0
 	
-	if description.modifier.value > 0:
-		value.set_number(description.modifier.value)
-		value.visible = true
+	if description.modifier.advancement > 0:
+		advancement.set_number(description.modifier.advancement)
+		#advancement.visible = true
+	else:
+		advancement.number.visible = false
 	
-	if description.modifier.count > 0:
-		count.set_number(description.modifier.count)
-		count.visible = true
-		
+	if description.modifier.duplication > 0:
+		duplication.set_number(description.modifier.duplication)
+		#duplication.visible = true
+	else:
+		duplication.number.visible = false
+	
 	charge.set_number(description.charge)
 	
 	input.type = "interaction"
@@ -71,3 +78,28 @@ func init_sockets() -> void:
 		sockets.add_child(socket)
 		socket.set_attributes(input)
 		socket.apply_conditions()
+#endregion
+
+
+func set_kits() -> void:
+	#print([veil.knight.sequence, description.interaction])
+	var kits = []
+	var dices = []
+	var socket = sockets.get_child(0)
+	
+	for dice in pool.dices.get_children():
+		if socket.condition_check(dice):
+			dices.append(dice)
+	
+	var constituents = Global.get_all_constituents(dices)
+	constituents = constituents[sockets.get_child_count()]
+	
+	for constituent in constituents:
+		#print("___")
+		for dice in constituent:
+		#	print(dice.get_current_facet_value())
+		pass
+
+
+func apply() -> void:
+	pass

@@ -48,10 +48,8 @@ layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Count" parent="HBox/Modifiers" instance=ExtResource("2_0pdym")]
-visible = false
+[node name="Duplication" parent="HBox/Modifiers" instance=ExtResource("2_0pdym")]
 layout_mode = 2
 
-[node name="Value" parent="HBox/Modifiers" instance=ExtResource("2_0pdym")]
-visible = false
+[node name="Advancement" parent="HBox/Modifiers" instance=ExtResource("2_0pdym")]
 layout_mode = 2

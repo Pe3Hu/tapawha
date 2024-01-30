@@ -86,3 +86,21 @@ func apply_conditions() -> void:
 						icon.set_number(value)
 						icon.visible = true
 #endregion
+
+
+func condition_check(dice_: MarginContainer) -> bool:
+	var flag = comparison_check(dice_)
+	return flag
+
+
+func comparison_check(dice_: MarginContainer) -> bool:
+	var value = dice_.get_current_facet_value()
+	var flag = true
+	
+	if less.visible:
+		flag = flag and value < less.get_number()
+	
+	if flag and more.visible:
+		flag = flag and value > more.get_number()
+	
+	return flag

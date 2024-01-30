@@ -32,6 +32,7 @@ func init_arr() -> void:
 	arr.sequence = ["first", "second", "third", "fourth"]
 	arr.put = ["input", "output"]
 	arr.comparison = ["less", "more"]
+	arr.element = ["aqua", "wind", "fire", "earth"]
 
 
 func init_num() -> void:
@@ -51,8 +52,56 @@ func init_dict() -> void:
 	init_neighbor()
 	init_quality()
 	init_windrose()
+	init_chain()
 	init_interaction()
 	init_enchantment()
+	
+
+
+func init_neighbor() -> void:
+	dict.neighbor = {}
+	dict.neighbor.linear3 = [
+		Vector3( 0, 0, -1),
+		Vector3( 1, 0,  0),
+		Vector3( 0, 0,  1),
+		Vector3(-1, 0,  0)
+	]
+	dict.neighbor.linear2 = [
+		Vector2( 0,-1),
+		Vector2( 1, 0),
+		Vector2( 0, 1),
+		Vector2(-1, 0)
+	]
+	dict.neighbor.diagonal = [
+		Vector2( 1,-1),
+		Vector2( 1, 1),
+		Vector2(-1, 1),
+		Vector2(-1,-1)
+	]
+	dict.neighbor.zero = [
+		Vector2( 0, 0),
+		Vector2( 1, 0),
+		Vector2( 1, 1),
+		Vector2( 0, 1)
+	]
+	dict.neighbor.hex = [
+		[
+			Vector2( 1,-1), 
+			Vector2( 1, 0), 
+			Vector2( 0, 1), 
+			Vector2(-1, 0), 
+			Vector2(-1,-1),
+			Vector2( 0,-1)
+		],
+		[
+			Vector2( 1, 0),
+			Vector2( 1, 1),
+			Vector2( 0, 1),
+			Vector2(-1, 1),
+			Vector2(-1, 0),
+			Vector2( 0,-1)
+		]
+	]
 
 
 func init_quality() -> void:
@@ -104,51 +153,6 @@ func init_quality() -> void:
 	dict.sequence.map["fourth"]["y"] = "down"
 
 
-func init_neighbor() -> void:
-	dict.neighbor = {}
-	dict.neighbor.linear3 = [
-		Vector3( 0, 0, -1),
-		Vector3( 1, 0,  0),
-		Vector3( 0, 0,  1),
-		Vector3(-1, 0,  0)
-	]
-	dict.neighbor.linear2 = [
-		Vector2( 0,-1),
-		Vector2( 1, 0),
-		Vector2( 0, 1),
-		Vector2(-1, 0)
-	]
-	dict.neighbor.diagonal = [
-		Vector2( 1,-1),
-		Vector2( 1, 1),
-		Vector2(-1, 1),
-		Vector2(-1,-1)
-	]
-	dict.neighbor.zero = [
-		Vector2( 0, 0),
-		Vector2( 1, 0),
-		Vector2( 1, 1),
-		Vector2( 0, 1)
-	]
-	dict.neighbor.hex = [
-		[
-			Vector2( 1,-1), 
-			Vector2( 1, 0), 
-			Vector2( 0, 1), 
-			Vector2(-1, 0), 
-			Vector2(-1,-1),
-			Vector2( 0,-1)
-		],
-		[
-			Vector2( 1, 0),
-			Vector2( 1, 1),
-			Vector2( 0, 1),
-			Vector2(-1, 1),
-			Vector2(-1, 0),
-			Vector2( 0,-1)
-		]
-	]
-
 
 func init_windrose() -> void:
 	dict.windrose = {}
@@ -170,6 +174,14 @@ func init_windrose() -> void:
 				windrose = "NW"
 			
 			dict.windrose[windrose] = direction
+
+
+func init_chain() -> void:
+	dict.chain = {}
+	dict.chain.stage = {}
+	dict.chain.stage[null] = "starter"
+	dict.chain.stage["starter"] = "finisher"
+	dict.chain.stage["finisher"] = "starter"
 
 
 func init_interaction() -> void:
@@ -198,6 +210,7 @@ func init_enchantment() -> void:
 	dict.enchantment = {}
 	dict.enchantment.index = {}
 	dict.enchantment.role = {}
+	dict.enchantment.origin = {}
 	
 	var path = "res://asset/json/tapawha_enchantment.json"
 	var array = load_data(path)
@@ -228,6 +241,14 @@ func init_enchantment() -> void:
 			dict.enchantment.role[data.role][data.rank] = []
 		
 		dict.enchantment.role[data.role][data.rank].append(enchantment.index)
+		
+		if !dict.enchantment.origin.has(data.origin):
+			dict.enchantment.origin[data.origin] = {}
+			
+		if !dict.enchantment.origin[data.origin].has(data.rank):
+			dict.enchantment.origin[data.origin][data.rank] = []
+		
+		dict.enchantment.origin[data.origin][data.rank].append(enchantment.index)
 
 
 func init_node() -> void:
@@ -337,3 +358,87 @@ func get_random_key(dict_: Dictionary):
 	
 	print("!bug! index_r error in get_random_key func")
 	return null
+
+
+func get_all_substitutions(array_: Array) -> Array:
+	var result = [[]]
+	
+	for _i in array_.size():
+		var slot_options = array_[_i]
+		var next = []
+		
+		for arr_ in result:
+			for option in slot_options:
+				var pair = []
+				pair.append_array(arr_)
+				pair.append(option)
+				next.append(pair)
+		
+		result = next
+		
+		for _j in range(result.size()-1,-1,-1):
+			if result[_j].size() < _i+1:
+				result.erase(result[_j])
+	
+	return result
+
+
+func get_all_permutations(array_: Array) -> Array:
+	var result = []
+	permutation(result, array_, 0)
+	return result
+
+
+func permutation(result_: Array, array_: Array, l_: int) -> void:
+	if l_ >= array_.size():
+		var array = []
+		array.append_array(array_)
+		result_.append(array)
+		return
+	
+	permutation(result_, array_, l_+1)
+	
+	for _i in range(l_+1,array_.size(),1):
+		swap(array_, l_, _i)
+		permutation(result_, array_, l_+1)
+		swap(array_, l_, _i)
+
+
+func swap(array_: Array, i_: int, j_: int) -> void:
+	var temp = array_[i_]
+	array_[i_] = array_[j_]
+	array_[j_] = temp
+
+
+func get_all_constituents(array_: Array) -> Dictionary:
+	var constituents = {}
+	constituents[0] = []
+	constituents[1] = []
+	
+	for child in array_:
+		constituents[0].append(child)
+		constituents[1].append([child])
+	
+	for _i in array_.size()-2:
+		set_constituents_based_on_size(constituents, _i+2)
+	
+	constituents[array_.size()] = [constituents[0]]
+	constituents.erase(0)
+	return constituents
+
+
+func set_constituents_based_on_size(constituents_: Dictionary, size_: int) -> void:
+	var parents = constituents_[size_-1]
+	var indexs = []
+	constituents_[size_] = []
+	
+	for parent in parents:
+		for child in constituents_[0]:
+			if !parent.has(child):
+				var constituent = []
+				constituent.append_array(parent)
+				constituent.append(child)
+				constituent.sort_custom(func(a, b): return constituents_[0].find(a) < constituents_[0].find(b))
+				
+				if !constituents_[size_].has(constituent):
+					constituents_[size_].append(constituent)
